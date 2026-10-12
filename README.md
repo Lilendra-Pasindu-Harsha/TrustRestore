@@ -105,4 +105,104 @@ PSNR and SSIM are not reported for arbitrary uploads because corresponding clean
 
 | Setting | Value |
 |---|---:|
-| Maximum image dimension
+| Maximum image dimension | 512 pixels |
+| Training patch size | 96 × 96 |
+| Masking ratio | 8% |
+| Optimization iterations | 300 |
+| Batch size | 8 |
+| Learning rate | 0.0002 |
+| Edge-loss weight | 0.15 |
+| Monte Carlo predictions | 20 |
+| Random seed | 42 |
+
+These values should match the notebook version included in this repository.
+
+## Evaluation
+
+### Restoration Quality
+
+- **PSNR:** Pixel-level fidelity to a clean reference
+- **SSIM:** Structural similarity to a clean reference
+- **Laplacian variance:** Supplementary sharpness proxy; noise can inflate it
+
+### Trust Analysis
+
+Pearson correlation measures the relationship between Trust Score and mean absolute RGB restoration error.
+
+A negative correlation supports an inverse association within the evaluated image. It does not establish calibrated uncertainty or guaranteed correctness.
+
+### Ablation Configurations
+
+| Configuration | Change |
+|---|---|
+| Full TrustRestore | All trust components and refinement |
+| No data trust | Observation-agreement component removed |
+| No structural trust | Gradient-consistency component removed |
+| No stability trust | Prediction-variance component removed |
+| No refinement | Mean deep-restoration output only |
+
+The trained model and Monte Carlo predictions remain fixed during these ablations. They evaluate trust-guided post-processing, not independently trained model variants.
+
+## Results
+
+Measured results should be added here after running the notebook.
+
+Do not interpret the availability of plots or metrics as evidence that the method improves restoration. Report increases, decreases, and weak trust-error correlations honestly.
+
+## Limitations
+
+- The current evaluation uses a small number of images.
+- Training and evaluation use the same degraded images.
+- Generalization to unseen images has not been established.
+- Masked-pixel prediction does not explicitly invert blur, illumination loss, or JPEG compression.
+- The model may oversmooth details or retain degradation.
+- Trust scores are uncalibrated and normalized per image.
+- Stable predictions can still be incorrect.
+- Bilateral refinement is not guaranteed to improve PSNR or SSIM.
+- Monte Carlo sampling increases inference cost.
+
+The project is not intended for safety-critical or diagnostic use.
+
+## Technologies
+
+Python · PyTorch · OpenCV · NumPy · pandas · Matplotlib ·
+scikit-image · Google Colab · Gradio
+
+## Research Paper
+
+A companion manuscript describes the proposed framework, controlled evaluation protocol, trust formulation, and limitations.
+
+**Publication status:** Research draft; no peer-reviewed publication is claimed.
+
+## Author
+
+**Pasindu Harsha**
+
+Department of Electronic and Telecommunication Engineering  
+General Sir John Kotelawala Defence University, Sri Lanka
+
+GitHub: https://github.com/Lilendra-Pasindu-Harsha
+
+## References
+
+1. D. Ulyanov, A. Vedaldi, and V. Lempitsky, “Deep Image Prior,” CVPR, 2018.  
+   https://openaccess.thecvf.com/content_cvpr_2018/html/Ulyanov_Deep_Image_Prior_CVPR_2018_paper.html
+
+2. J. Lehtinen et al., “Noise2Noise: Learning Image Restoration without Clean Data,” ICML, 2018.  
+   https://proceedings.mlr.press/v80/lehtinen18a.html
+
+3. A. Krull, T.-O. Buchholz, and F. Jug, “Noise2Void—Learning Denoising From Single Noisy Images,” CVPR, 2019.  
+   https://openaccess.thecvf.com/content_CVPR_2019/html/Krull_Noise2Void_-_Learning_Denoising_From_Single_Noisy_Images_CVPR_2019_paper.html
+
+4. Y. Gal and Z. Ghahramani, “Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning,” ICML, 2016.  
+   https://proceedings.mlr.press/v48/gal16.html
+
+5. Z. Wang et al., “Image Quality Assessment: From Error Visibility to Structural Similarity,” IEEE Transactions on Image Processing, 2004.  
+   https://doi.org/10.1109/TIP.2003.819861
+
+6. C. Tomasi and R. Manduchi, “Bilateral Filtering for Gray and Color Images,” ICCV, 1998.  
+   https://doi.org/10.1109/ICCV.1998.710815
+
+## License
+
+This project is distributed under the MIT License. See `LICENSE` for details.
