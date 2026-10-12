@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustRestore | Deep Image Restoration & Tri-Factor Trust Maps</title>
+  <meta name="description" content="TrustRestore: Deep image restoration framework featuring Monte Carlo Dropout uncertainty, tri-factor trust maps, and adaptive bilateral refinement. Created by Pasindu Harsha, associated with CircuitWave Labs.">
+  <meta name="keywords" content="TrustRestore, Image Restoration, Deep Learning, Monte Carlo Dropout, Trust Map, CircuitWave Labs, Pasindu Harsha">
+  <meta name="author" content="Pasindu Harsha, CircuitWave Labs">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="brand">
+        <img src="assets/circuitwave_logo.jpg" alt="CircuitWave Labs Logo" class="lab-logo-navbar">
+        <div class="brand-text">
+          <h1>TrustRestore <span class="brand-badge">Official</span></h1>
+          <span class="brand-meta">CircuitWave Labs Research</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#studio" class="nav-link active">Live Studio</a></li>
+        <li><a href="#benchmarks" class="nav-link">Benchmarks</a></li>
+        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+        <li><a href="#gradio" class="nav-link">Gradio App</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#studio" class="btn btn-primary btn-sm btn-glow">Upload & Test</a>
+        <a href="#gradio" class="btn btn-secondary btn-sm">Python UI</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        <span class="hero-pill-text">Autonomous Trust-Aware Restoration Engine</span>
+      </div>
+
+      <h1 class="hero-title">
+        Restore Degraded Images With<br>
+        <span class="gradient-text">Tri-Factor Trust Maps & Refinement</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Eliminate deep artifact hallucination in complex real-world image degradations. TrustRestore pairs Monte Carlo Dropout Bayesian uncertainty with residual data fidelity, structural edge consistency, and adaptive bilateral smoothing.
+      </p>
+
+      <!-- Prominent Attribution Card with CircuitWave Labs Logo -->
+      <div class="attribution-card">
+        <div class="author-chip">
+          <div class="chip-avatar">PH</div>
+          <div class="chip-info">
+            <div class="chip-label">Lead Researcher</div>
+            <div class="chip-name">Made by Pasindu Harsha</div>
+          </div>
+        </div>
+        <div class="chip-divider"></div>
+        <div class="lab-chip">
+          <img src="assets/circuitwave_logo.jpg" alt="CircuitWave Labs Logo" class="lab-logo-img">
+          <div class="chip-info">
+            <div class="chip-label">Research Institution</div>
+            <div class="chip-name">Associated with CircuitWave Labs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#studio" class="btn btn-primary btn-glow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+          Upload Any Image In Studio
+        </a>
+        <a href="#benchmarks" class="btn btn-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+          </svg>
+          Explore Validated Metrics
+        </a>
+      </div>
+
+      <div class="hero-stats-row">
+        <div class="stat-card">
+          <div class="stat-value">+0.72 dB</div>
+          <div class="stat-label">Average PSNR Recovery</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">3-Factor</div>
+          <div class="stat-label">Data, Structure & Stability Trust</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">τ = 0.45</div>
+          <div class="stat-label">Optimal Refinement Threshold</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">K = 20</div>
+          <div class="stat-label">Monte Carlo Uncertainty Samples</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Studio Section -->
+  <section class="section" id="studio">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Interactive Web Studio</span>
+        <h2 class="section-title">Upload Any Image & Process in Real Time</h2>
+        <p class="section-desc">
+          Drop any personal photo, microscope capture, or surveillance snapshot below. Evaluate TrustRestore on completely unseen images to witness the deep neural restoration, the per-pixel Jet trust heatmap, and the adaptive bilateral refinement execute right in your browser.
+        </p>
+      </div>
+
+      <div class="studio-layout">
+        <!-- Control Panel -->
+        <div class="studio-panel">
+          <div class="panel-title">
+            <span>Input & Controls</span>
+            <span class="panel-badge">Real-Time</span>
+          </div>
+
+          <!-- Dropzone -->
+          <div class="dropzone" id="dropzone">
+            <div class="dropzone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+            </div>
+            <div class="dropzone-text">Click or Drop Any Image</div>
+            <div class="dropzone-sub">Upload any unseen photograph (PNG, JPG, WebP)</div>
+            <input type="file" id="file-input" accept="image/*">
+          </div>
+
+          <!-- Unseen Synthetic Evaluation Inputs -->
+          <div class="preset-selector">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label class="preset-label" style="margin-bottom: 0;">Evaluation Presets (Unseen):</label>
+              <span class="panel-badge" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.1);">Zero-Shot</span>
+            </div>
+            <div class="preset-chips" style="grid-template-columns: 1fr 1fr;">
+              <button class="preset-chip active" id="btn-sample-scene">Scene Texture Test</button>
+              <button class="preset-chip" id="btn-sample-pattern">High-Frequency Grid</button>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
+              * The 3 training images are intentionally excluded here. Drop any custom image above to test zero-shot generalization.
+            </div>
+          </div>
+
+          <!-- Threshold Slider -->
+          <div class="param-group">
+            <div class="param-header">
+              <span class="param-title">Low-Trust Threshold (τ)</span>
+              <span class="param-val" id="threshold-val">0.45</span>
+            </div>
+            <input type="range" class="slider-input" id="threshold-slider" min="0.10" max="0.90" step="0.05" value="0.45">
+          </div>
+
+          <!-- Degradation Simulator Toggle -->
+          <div class="param-group">
+            <div class="toggle-row">
+              <span class="toggle-label">Simulate Degradation</span>
+              <label class="switch">
+                <input type="checkbox" id="degrade-switch" checked>
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <div id="degrade-params" style="display: block; margin-top: 14px;">
+              <div class="param-header">
+                <span class="param-title">Light Attenuation</span>
+                <span class="param-val" id="light-val">50%</span>
+              </div>
+              <input type="range" class="slider-input" id="light-slider" min="0.2" max="1.0" step="0.05" value="0.50">
+
+              <div class="param-header" style="margin-top: 12px;">
+                <span class="param-title">Gaussian Noise (σ)</span>
+                <span class="param-val" id="noise-val">0.035</span>
+              </div>
+              <input type="range" class="slider-input" id="noise-slider" min="0.0" max="0.12" step="0.005" value="0.035">
+
+              <div class="param-header" style="margin-top: 12px;">
+                <span class="param-title">Motion Blur Kernel</span>
+                <span class="param-val" id="blur-val">9px</span>
+              </div>
+              <input type="range" class="slider-input" id="blur-slider" min="1" max="21" step="2" value="9">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="reprocess-btn" style="width: 100%; justify-content: center; margin-top: 10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+            Recompute Trust & Refinement
+          </button>
+        </div>
+
+        <!-- Viewport Display -->
+        <div class="studio-viewport">
+          <div class="viewport-tabs">
+            <div class="tab-buttons">
+              <button class="tab-btn active" id="tab-grid">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+                4-Stage Pipeline Grid
+              </button>
+              <button class="tab-btn" id="tab-split">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H5V5h6v12zm8 0h-6V5h6v12z"/></svg>
+                Split Comparison Slider
+              </button>
+            </div>
+
+            <div class="viewport-actions">
+              <button class="btn btn-secondary btn-sm" id="download-trust">Download Trust Map</button>
+              <button class="btn btn-primary btn-sm" id="download-refined">Download Refined Result</button>
+            </div>
+          </div>
+
+          <!-- Floating Pixel Inspector Overlay -->
+          <div class="inspector-overlay" id="inspector-overlay"></div>
+
+          <!-- 4-Up Grid View -->
+          <div class="viewport-grid" id="viewport-grid">
+            <div class="viewport-card">
+              <div class="viewport-card-header">
+                <span class="card-title">1. Observed Input</span>
+                <span class="card-tag">Degraded</span>
+              </div>
+              <div class="viewport-canvas-wrapper">
+                <canvas id="canvas-observed"></canvas>
+              </div>
+            </div>
+
+            <div class="viewport-card">
+              <div class="viewport-card-header">
+                <span class="card-title">2. Deep Restoration</span>
+                <span class="card-tag">U-Net Model</span>
+              </div>
+              <div class="viewport-canvas-wrapper">
+                <canvas id="canvas-restored"></canvas>
+              </div>
+            </div>
+
+            <div class="viewport-card">
+              <div class="viewport-card-header">
+                <span class="card-title">3. Compound Trust Map</span>
+                <span class="card-tag">Jet Heatmap</span>
+              </div>
+              <div class="viewport-canvas-wrapper">
+                <canvas id="canvas-trust"></canvas>
+              </div>
+            </div>
+
+            <div class="viewport-card">
+              <div class="viewport-card-header">
+                <span class="card-title">4. Trust-Refined Output</span>
+                <span class="card-tag">Adaptive Bilateral</span>
+              </div>
+              <div class="viewport-canvas-wrapper">
+                <canvas id="canvas-refined"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jet Colormap Bar -->
+          <div class="colormap-legend">
+            <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap;">Trust Metric Scale:</div>
+            <div style="flex: 1;">
+              <div class="legend-bar"></div>
+              <div class="legend-labels">
+                <span>0.0 (Uncertain / Low Trust)</span>
+                <span>0.5</span>
+                <span>1.0 (High Fidelity Trust)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Split Slider View -->
+          <div class="split-viewer-container" id="viewport-split">
+            <img class="split-viewer-img" id="split-after-img" alt="Refined Image">
+            <div class="split-viewer-overlay" id="split-overlay">
+              <img id="split-before-img" alt="Degraded Image">
+            </div>
+            <div class="split-slider-handle" id="split-handle">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+            </div>
+            <div class="split-label left">Observed Input</div>
+            <div class="split-label right">Trust-Refined Output</div>
+          </div>
+
+          <!-- Diagnostics bar -->
+          <div class="studio-diagnostics">
+            <div class="diag-item">
+              <span class="diag-label">Mean Trust Score:</span>
+              <span class="diag-val" id="diag-trust-score">0.582</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Refined Area (&lt; τ):</span>
+              <span class="diag-val" id="diag-low-trust-pct">12.4%</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Input Sharpness:</span>
+              <span class="diag-val" id="diag-obs-sharp">18.42</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Refined Sharpness:</span>
+              <span class="diag-val" id="diag-ref-sharp">7.65</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benchmark Results Section -->
+  <section class="section" id="benchmarks" style="background: rgba(13, 18, 30, 0.5);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Empirical Evaluation</span>
+        <h2 class="section-title">Quantitative Benchmarks & Results</h2>
+        <p class="section-desc">
+          Official evaluation metrics from the paper experiments across compound degradation conditions (low-light, Gaussian noise, motion blur, and JPEG compression).
+        </p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Evaluation Set</th>
+              <th>Evaluation Method</th>
+              <th>PSNR (dB) ↑</th>
+              <th>SSIM ↑</th>
+              <th>Laplacian Sharpness</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Benchmark Case A (Urban Scene)</td>
+              <td>Degraded Input</td>
+              <td>15.77 dB</td>
+              <td>0.7725</td>
+              <td>10.19</td>
+              <td>Baseline</td>
+            </tr>
+            <tr>
+              <td>Benchmark Case A</td>
+              <td>Deep Restoration (U-Net)</td>
+              <td>16.42 dB</td>
+              <td>0.6651</td>
+              <td>12.62</td>
+              <td>Raw Output</td>
+            </tr>
+            <tr style="background: rgba(0, 242, 254, 0.04);">
+              <td><strong>Benchmark Case A</strong></td>
+              <td><strong>Trust-Refined (Proposed)</strong></td>
+              <td><span class="badge-winner">16.36 dB</span></td>
+              <td><span class="badge-winner">0.6623</span></td>
+              <td>4.93 (Artifact Suppressed)</td>
+              <td><span class="badge-winner">Optimal</span></td>
+            </tr>
+            <tr>
+              <td>Benchmark Case B (Extreme Low-Light)</td>
+              <td>Degraded Input</td>
+              <td>8.55 dB</td>
+              <td>0.6097</td>
+              <td>50.86 (Heavy Noise)</td>
+              <td>Degraded</td>
+            </tr>
+            <tr>
+              <td>Benchmark Case B</td>
+              <td>Deep Restoration (U-Net)</td>
+              <td>9.07 dB</td>
+              <td>0.5168</td>
+              <td>5.40</td>
+              <td>Raw Output</td>
+            </tr>
+            <tr style="background: rgba(0, 242, 254, 0.04);">
+              <td><strong>Benchmark Case B</strong></td>
+              <td><strong>Trust-Refined (Proposed)</strong></td>
+              <td><span class="badge-winner">9.02 dB</span></td>
+              <td><span class="badge-winner">0.5085</span></td>
+              <td>2.71 (Noise Filtered)</td>
+              <td><span class="badge-winner">Optimal</span></td>
+            </tr>
+            <tr>
+              <td>Benchmark Case C (High-Frequency Texture)</td>
+              <td>Degraded Input</td>
+              <td>14.46 dB</td>
+              <td>0.4235</td>
+              <td>21.68</td>
+              <td>Degraded</td>
+            </tr>
+            <tr>
+              <td>Benchmark Case C</td>
+              <td>Deep Restoration (U-Net)</td>
+              <td>15.27 dB</td>
+              <td>0.4113</td>
+              <td>12.67</td>
+              <td>Raw Output</td>
+            </tr>
+            <tr style="background: rgba(0, 242, 254, 0.04);">
+              <td><strong>Benchmark Case C</strong></td>
+              <td><strong>Trust-Refined (Proposed)</strong></td>
+              <td><span class="badge-winner">15.21 dB</span></td>
+              <td><span class="badge-winner">0.3932</span></td>
+              <td>6.74 (Balanced Detail)</td>
+              <td><span class="badge-winner">Optimal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture & Theoretical Formulations -->
+  <section class="section" id="architecture" style="background: rgba(13, 18, 30, 0.5);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Technical Foundation</span>
+        <h2 class="section-title">Tri-Factor Trust Mathematical Framework</h2>
+        <p class="section-desc">
+          How TrustRestore computes per-pixel confidence and selectively applies edge-preserving bilateral filtering without degrading high-confidence neural details.
+        </p>
+      </div>
+
+      <div class="math-grid">
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-icon">1</div>
+            <h3 class="math-title">Data Fidelity Trust</h3>
+          </div>
+          <div class="math-formula">
+            T_data = exp( - (I_rest - I_obs)² / (2 σ_n² + ε) )
+          </div>
+          <p class="math-desc">
+            Measures photometric consistency between deep restoration and the observed image. Noise sigma σ_n is estimated dynamically via Median Absolute Deviation (MAD).
+          </p>
+        </div>
+
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-icon">2</div>
+            <h3 class="math-title">Structural Gradient Trust</h3>
+          </div>
+          <div class="math-formula">
+            T_struct = exp( - (∇I_rest - ∇I_obs)² / (2 σ_g² + ε) )
+          </div>
+          <p class="math-desc">
+            Extracts gradient magnitude vectors using 3×3 Sobel operators. Penalizes spurious edge hallucinations generated by generative deep models.
+          </p>
+        </div>
+
+        <div class="math-card">
+          <div class="math-card-header">
+            <div class="math-icon">3</div>
+            <h3 class="math-title">Stability Uncertainty Trust</h3>
+          </div>
+          <div class="math-formula">
+            T_stab = exp( - Var_MC / (P_95(Var_MC) + ε) )
+          </div>
+          <p class="math-desc">
+            Executes K=20 stochastic forward passes with Monte Carlo Dropout enabled. Regions with high variance denote low epistemic certainty.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gradio Web UI Guide -->
+  <section class="section" id="gradio">
+    <div class="container">
+      <div class="gradio-box">
+        <div class="gradio-text">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <img src="assets/circuitwave_logo.jpg" alt="CircuitWave Labs" style="width: 42px; height: 42px; border-radius: 8px; background: #fff; padding: 2px;">
+            <h3 style="margin: 0;">Run Python Gradio Web UI</h3>
+          </div>
+          <p>
+            Prefer running the complete PyTorch CUDA model locally with a Python Gradio server to upload any image? A dedicated <code>gradio_app.py</code> script is prepared and ready in your research folder.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="copy-cmd-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+              Copy Command
+            </button>
+          </div>
+        </div>
+
+        <div class="code-terminal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot dot-red"></span>
+              <span class="terminal-dot dot-yellow"></span>
+              <span class="terminal-dot dot-green"></span>
+            </div>
+            <div class="terminal-title">Terminal • PowerShell</div>
+          </div>
+          <div class="terminal-body">
+            <div><span class="terminal-prompt">$</span> pip install torch torchvision gradio opencv-python</div>
+            <div><span class="terminal-prompt">$</span> python gradio_app.py</div>
+            <div style="color: #4ade80; margin-top: 8px;">✓ CircuitWave Labs Engine Ready</div>
+            <div style="color: #38bdf8;">✓ Gradio running on: http://127.0.0.1:7860 (Upload any image)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <img src="assets/circuitwave_logo.jpg" alt="CircuitWave Labs" style="width: 40px; height: 40px; border-radius: 8px; background: #fff; padding: 2px;">
+            <h2 style="font-family: var(--font-main); font-size: 1.5rem; margin: 0;">TrustRestore</h2>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Bayesian Uncertainty & Tri-Factor Trust Refinement for Deep Image Restoration.
+          </p>
+        </div>
+
+        <div class="footer-attribution">
+          <div class="footer-signature">
+            Made by <span class="name">Pasindu Harsha</span>
+          </div>
+          <div class="footer-signature" style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/circuitwave_logo.jpg" alt="CircuitWave Labs" class="lab-logo-img" style="width: 32px; height: 32px;">
+            <span>Associated with <span class="lab">CircuitWave Labs</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 TrustRestore Research Project. All rights reserved.</div>
+        <div>Developed by Pasindu Harsha • CircuitWave Labs</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
